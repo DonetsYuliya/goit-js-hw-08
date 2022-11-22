@@ -15,5 +15,7 @@ function onPlay({ seconds }) {
     return [];
   }
 }
+const getLocalStorage = localStorage.getItem(LOCALSTORAGE_KEY);
+if (!getLocalStorage) return;
 
-player.setCurrentTime(localStorage.getItem(LOCALSTORAGE_KEY));
+player.setCurrentTime(getLocalStorage || 0);
