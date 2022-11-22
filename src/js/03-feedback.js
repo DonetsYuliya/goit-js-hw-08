@@ -1,12 +1,12 @@
 var throttle = require('lodash.throttle');
 
 const formRef = document.querySelector('.feedback-form');
-const LOCALSTORAGE_KEY = 'feedback-form-state';
+const LOCAL_KEY = 'feedback-form-state';
 let dataObject = getData();
 
 updateForm();
 
-formRef.addEventListener('input', handleInput);
+formRef.addEventListener('input', throttle(handleInput, 500));
 
 function handleInput(event) {
   event.preventDefault();
@@ -20,7 +20,8 @@ function handleInput(event) {
   if (!valueEmail || !valueMessage) return;
 
   const userFeedback = createMessageForm(valueEmail, valueMessage);
-  saveData(userFeedback);
+
+  saveData(userFeedback); 
 }
 
 function createMessageForm(valueEmail, valueMessage) {
@@ -29,12 +30,12 @@ function createMessageForm(valueEmail, valueMessage) {
 
 function saveData(userFeedback) {
   dataObject = userFeedback;
-  localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(dataObject));
+  localStorage.setItem(LOCAL_KEY, JSON.stringify(dataObject));
 }
 
 function getData() {
   try {
-    const dataJson = localStorage.getItem(LOCALSTORAGE_KEY);
+    const dataJson = localStorage.getItem(LOCAL_KEY);
     if (!dataJson) return [];
     return JSON.parse(dataJson);
   } catch (error) {
