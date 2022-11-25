@@ -2,14 +2,19 @@ var throttle = require('lodash.throttle');
 
 const formRef = document.querySelector('.feedback-form');
 const LOCAL_KEY = 'feedback-form-state';
+let emailEl = (formRef.elements.name = 'email');
+let messageEl = (formRef.elements.name = 'message');
 let dataObject = getData();
+emailEl = '';
+messageEl = '';
 
 updateForm();
 
 formRef.addEventListener('input', throttle(handleInput, 500));
 
 function handleInput(event) {
-  event.preventDefault();
+  if (!event.currentTarget) return;
+
   const {
     elements: { email, message },
   } = event.currentTarget;
@@ -21,7 +26,7 @@ function handleInput(event) {
 
   const userFeedback = createMessageForm(valueEmail, valueMessage);
 
-  saveData(userFeedback); 
+  saveData(userFeedback);
 }
 
 function createMessageForm(valueEmail, valueMessage) {
